@@ -5,8 +5,8 @@ from sklearn.linear_model import PassiveAggressiveClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix
 
 # 1. Dataset load
-# Kaggle lo "Fake News Dataset" untundi. Sample CSV lo columns: [title, text, label]
-df = pd.read_csv("data/news.csv")
+fake = pd.read_csv("data/Fake.csv")
+true = pd.read_csv("data/True.csv")
 
 # 2. Data split
 x_train, x_test, y_train, y_test = train_test_split(
