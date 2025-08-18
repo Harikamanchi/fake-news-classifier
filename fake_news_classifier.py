@@ -5,29 +5,36 @@ from sklearn.linear_model import PassiveAggressiveClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix
 
 # 1. Dataset load
-fake = pd.read_csv("data/Fake.csv")
-true = pd.read_csv("data/True.csv")
+fake = pd.read_csv("Fake_small.csv")
+true = pd.read_csv("True.csv")
 
-# 2. Data split
+# 2. Labels add cheyyali
+fake["label"] = "FAKE"
+true["label"] = "REAL"
+
+# 3. Combine datasets
+df = pd.concat([fake, true], axis=0)
+
+# 4. Data split (X = text, y = label)
 x_train, x_test, y_train, y_test = train_test_split(
     df['text'], df['label'], test_size=0.2, random_state=42
 )
 
-# 3. Text vectorization
+# 5. Text vectorization
 vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7)
 tfidf_train = vectorizer.fit_transform(x_train)
 tfidf_test = vectorizer.transform(x_test)
 
-# 4. Model train
+# 6. Model train
 model = PassiveAggressiveClassifier(max_iter=50)
 model.fit(tfidf_train, y_train)
 
-# 5. Predictions
+# 7. Predictions
 y_pred = model.predict(tfidf_test)
 
-# 6. Accuracy
+# 8. Accuracy
 score = accuracy_score(y_test, y_pred)
 print(f"Accuracy: {round(score*100, 2)}%")
 
-# 7. Confusion Matrix
+# 9. Confusion Matrix
 print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
